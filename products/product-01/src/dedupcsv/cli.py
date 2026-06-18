@@ -48,6 +48,11 @@ def run(
     "-e",
     help="文字コード（未指定時は自動判定: UTF-8 / Shift_JIS）",
   ),
+  dry_run: bool = typer.Option(
+    False,
+    "--dry-run",
+    help="出力ファイルを書き込まず、削除件数だけ表示",
+  ),
 ) -> None:
   """CSV ファイルから重複行を除去します。"""
   try:
@@ -57,19 +62,24 @@ def run(
       key_columns=_parse_columns(keys),
       keep=keep,
       encoding=encoding,
+      dry_run=dry_run,
     )
   except DedupeError as exc:
     console.print(f"[red]エラー:[/red] {exc}")
     raise typer.Exit(code=1) from exc
 
-  table = Table(title="DedupeCSV 結果")
+  title = "DedupeCSV 結果（dry-run）" if dry_run else "DedupeCSV 結果"
+  table = Table(title=title)
   table.add_column("項目")
   table.add_column("値", justify="right")
   table.add_row("入力行数", str(result.input_rows))
   table.add_row("出力行数", str(result.output_rows))
   table.add_row("削除した重複", str(result.duplicates_removed))
   table.add_row("文字コード", result.encoding)
-  table.add_row("出力先", str(output))
+  if dry_run:
+    table.add_row("モード", "dry-run（出力ファイルは作成しません）")
+  else:
+    table.add_row("出力先", str(output))
   console.print(table)
 
 
