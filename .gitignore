@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+*.spec
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+products/*/dist/
+products/*/build/
+products/*/release/
+*.exe
+*.spec
+
+# Test
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Env
+.env
+.env.*
