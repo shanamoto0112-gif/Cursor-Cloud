@@ -115,6 +115,7 @@ def dedupe_file(
   key_columns: list[str] | None = None,
   keep: str = "first",
   encoding: str | None = None,
+  dry_run: bool = False,
 ) -> DedupeResult:
   if not input_path.exists():
     raise DedupeError(f"入力ファイルが見つかりません: {input_path}")
@@ -131,7 +132,8 @@ def dedupe_file(
       )
 
   deduped = dedupe_rows(rows, key_columns=key_columns, keep=keep)
-  write_csv(output_path, deduped, fieldnames, chosen_encoding)
+  if not dry_run:
+    write_csv(output_path, deduped, fieldnames, chosen_encoding)
 
   return DedupeResult(
     input_rows=len(rows),
