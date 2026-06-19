@@ -89,6 +89,14 @@ def version() -> None:
   console.print(f"DedupeCSV v{__version__}")
 
 
+@app.command()
+def gui() -> None:
+  """GUI を起動します。"""
+  from dedupcsv.gui import main as gui_main
+
+  gui_main()
+
+
 def main() -> None:
   app()
 
