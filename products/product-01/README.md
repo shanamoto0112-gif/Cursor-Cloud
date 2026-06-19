@@ -1,6 +1,6 @@
 # DedupeCSV — CSV重複行除去ツール
 
-Excel でリストを扱う前に、CSV の重複行を一瞬で除去する Windows 向け CLI ツールです。
+Excel でリストを扱う前に、CSV の重複行を一瞬で除去する Windows 向けツールです。**CLI** と **GUI** の両方に対応しています。
 
 ## 特徴
 
@@ -8,6 +8,7 @@ Excel でリストを扱う前に、CSV の重複行を一瞬で除去する Win
 - **日本語 CSV 対応** — UTF-8 / Shift_JIS (CP932) を自動判定
 - **キー列指定** — メールアドレス列だけで重複判定など
 - **大量ファイル対応** — 数千行の CSV も処理可能
+- **GUI 版** — Mac 風の見やすい画面で、列をチェックして操作
 
 ## 使い方
 
@@ -21,7 +22,26 @@ pip install -r requirements.txt
 pip install -e .
 ```
 
-### 基本コマンド
+### GUI 版（おすすめ）
+
+```powershell
+dedupcsv-gui
+```
+
+または:
+
+```powershell
+dedupcsv gui
+```
+
+**操作の流れ**
+
+1. 「ファイルを選ぶ」で CSV を選択
+2. 重複判定に使う列にチェック（未選択なら全列）
+3. 「プレビュー」で削除件数を確認
+4. 「実行して保存」で結果を書き出し
+
+### 基本コマンド（CLI）
 
 ```powershell
 # 全列が一致する行を除去（最初の行を残す）
@@ -43,11 +63,15 @@ dedupcsv run input.csv output.csv --keys email --dry-run
 ```powershell
 pip install -r requirements-dev.txt
 .\build.ps1
-# dist\dedupcsv.exe が生成されます
+# dist\dedupcsv.exe が生成されます（CLI）
+
+.\build-gui.ps1
+# dist\dedupcsv-gui.exe が生成されます（GUI）
 ```
 
 ```powershell
 dist\dedupcsv.exe run input.csv output.csv --keys email
+dist\dedupcsv-gui.exe
 ```
 
 ## オプション

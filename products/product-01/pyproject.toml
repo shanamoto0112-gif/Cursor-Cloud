@@ -4,17 +4,19 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dedupcsv"
-version = "1.1.0"
+version = "1.2.0"
 description = "CSV duplicate row remover for Windows"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "typer>=0.12",
     "rich>=13.0",
+    "customtkinter>=5.2",
 ]
 
 [project.scripts]
 dedupcsv = "dedupcsv.cli:main"
+dedupcsv-gui = "dedupcsv.gui:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
