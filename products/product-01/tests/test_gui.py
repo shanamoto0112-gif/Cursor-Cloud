@@ -18,4 +18,8 @@ def test_duplicate_stat_color():
 
 
 def test_gui_module_imports():
-  import dedupcsv.gui  # noqa: F401
+  from dedupcsv.gui import get_font_family, make_font, resolve_key_columns
+
+  assert resolve_key_columns([]) is None
+  assert callable(get_font_family)
+  assert callable(make_font)
