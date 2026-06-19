@@ -83,8 +83,8 @@ class DedupeApp(ctk.CTk):
     ctk.set_default_color_theme("blue")
 
     self.title(f"DedupeCSV v{__version__}")
-    self.geometry("760x860")
-    self.minsize(680, 760)
+    self.geometry("760x720")
+    self.minsize(680, 640)
     self.configure(fg_color=BG)
 
     self._input_path: Path | None = None
@@ -99,41 +99,42 @@ class DedupeApp(ctk.CTk):
     self.grid_rowconfigure(1, weight=1)
 
     header = ctk.CTkFrame(self, fg_color=BG)
-    header.grid(row=0, column=0, sticky="ew", padx=28, pady=(20, 8))
+    header.grid(row=0, column=0, sticky="ew", padx=28, pady=(16, 4))
     header.grid_columnconfigure(0, weight=1)
 
     ctk.CTkLabel(
       header,
       text="DedupeCSV",
-      font=make_font(28, weight="bold"),
+      font=make_font(24, weight="bold"),
       text_color=TEXT,
       anchor="w",
     ).grid(row=0, column=0, sticky="w")
     ctk.CTkLabel(
       header,
       text="CSV 重複行除去 (Remove Duplicate CSV Rows) — オフライン (Offline)",
-      font=make_font(14),
+      font=make_font(13),
       text_color=TEXT_SECONDARY,
       anchor="w",
-    ).grid(row=1, column=0, sticky="w", pady=(4, 0))
+    ).grid(row=1, column=0, sticky="w", pady=(2, 0))
 
-    content = ctk.CTkScrollableFrame(self, fg_color=BG, corner_radius=0)
-    content.grid(row=1, column=0, sticky="nsew", padx=28, pady=(0, 8))
+    content = ctk.CTkFrame(self, fg_color=BG)
+    content.grid(row=1, column=0, sticky="nsew", padx=28, pady=(0, 4))
     content.grid_columnconfigure(0, weight=1)
+    content.grid_rowconfigure(1, weight=1)
 
     file_card = Card(content, "1. CSV を選ぶ (Select CSV)")
-    file_card.grid(row=0, column=0, sticky="ew", pady=(0, 8))
+    file_card.grid(row=0, column=0, sticky="ew", pady=(0, 6))
 
     self._file_label = ctk.CTkLabel(
       file_card,
       text="ファイル未選択 (No file selected)",
-      font=make_font(14),
+      font=make_font(13),
       text_color=TEXT_SECONDARY,
       anchor="w",
       wraplength=620,
       justify="left",
     )
-    self._file_label.grid(row=1, column=0, sticky="ew", padx=20, pady=(0, 12))
+    self._file_label.grid(row=1, column=0, sticky="ew", padx=20, pady=(0, 8))
 
     ctk.CTkButton(
       file_card,
@@ -143,36 +144,36 @@ class DedupeApp(ctk.CTk):
       hover_color=ACCENT_HOVER,
       text_color="#FFFFFF",
       corner_radius=10,
-      height=40,
-      font=make_font(14, weight="bold"),
-    ).grid(row=2, column=0, sticky="w", padx=20, pady=(0, 16))
+      height=36,
+      font=make_font(13, weight="bold"),
+    ).grid(row=2, column=0, sticky="w", padx=20, pady=(0, 12))
 
     columns_card = Card(content, "2. 重複判定列 (Key Columns)")
-    columns_card.grid(row=1, column=0, sticky="ew", pady=(0, 8))
+    columns_card.grid(row=1, column=0, sticky="nsew", pady=(0, 6))
+    columns_card.grid_columnconfigure(0, weight=1)
     columns_card.grid_rowconfigure(2, weight=1)
 
     ctk.CTkLabel(
       columns_card,
       text="未選択時は全列で判定 (Use all columns if none selected)",
-      font=make_font(12),
+      font=make_font(11),
       text_color=TEXT_SECONDARY,
       anchor="w",
-    ).grid(row=1, column=0, sticky="w", padx=20, pady=(0, 8))
+    ).grid(row=1, column=0, sticky="w", padx=20, pady=(0, 6))
 
     self._columns_frame = ctk.CTkScrollableFrame(
       columns_card,
       fg_color="#FAFAFA",
       corner_radius=8,
-      height=160,
       label_text="",
     )
-    self._columns_frame.grid(row=2, column=0, sticky="ew", padx=20, pady=(0, 12))
+    self._columns_frame.grid(row=2, column=0, sticky="nsew", padx=20, pady=(0, 12))
     self._columns_frame.grid_columnconfigure(0, weight=1)
 
     self._columns_placeholder = ctk.CTkLabel(
       self._columns_frame,
       text="CSV を選ぶと列名が表示されます (Columns appear after file selection)",
-      font=make_font(13),
+      font=make_font(12),
       text_color=TEXT_SECONDARY,
       anchor="w",
       wraplength=560,
@@ -181,17 +182,17 @@ class DedupeApp(ctk.CTk):
     self._columns_placeholder.grid(row=0, column=0, sticky="w", padx=8, pady=8)
 
     keep_card = Card(content, "3. 残す行 (Keep Row)")
-    keep_card.grid(row=2, column=0, sticky="ew", pady=(0, 8))
+    keep_card.grid(row=2, column=0, sticky="ew")
 
     keep_row = ctk.CTkFrame(keep_card, fg_color="transparent")
-    keep_row.grid(row=1, column=0, sticky="w", padx=20, pady=(0, 16))
+    keep_row.grid(row=1, column=0, sticky="w", padx=20, pady=(0, 12))
 
     ctk.CTkRadioButton(
       keep_row,
       text="最初の行 (First)",
       variable=self._keep_var,
       value="first",
-      font=make_font(14),
+      font=make_font(13),
       text_color=TEXT,
       fg_color=ACCENT,
       hover_color=ACCENT_HOVER,
@@ -201,54 +202,54 @@ class DedupeApp(ctk.CTk):
       text="最後の行 (Last)",
       variable=self._keep_var,
       value="last",
-      font=make_font(14),
+      font=make_font(13),
       text_color=TEXT,
       fg_color=ACCENT,
       hover_color=ACCENT_HOVER,
     ).pack(side="left")
 
     footer = ctk.CTkFrame(self, fg_color=BG)
-    footer.grid(row=2, column=0, sticky="ew", padx=28, pady=(0, 20))
+    footer.grid(row=2, column=0, sticky="ew", padx=28, pady=(0, 16))
     footer.grid_columnconfigure(0, weight=1)
 
-    preview_card = Card(footer, "4. 結果プレビュー (Preview)")
-    preview_card.grid(row=0, column=0, sticky="ew", pady=(0, 12))
+    preview_card = Card(footer, "4. 結果 (Preview)")
+    preview_card.grid(row=0, column=0, sticky="ew", pady=(0, 8))
 
     stats = ctk.CTkFrame(preview_card, fg_color="transparent")
-    stats.grid(row=1, column=0, sticky="ew", padx=16, pady=(0, 8))
+    stats.grid(row=1, column=0, sticky="ew", padx=12, pady=(0, 4))
     stats.grid_columnconfigure((0, 1, 2), weight=1)
 
-    self._input_stat = self._make_stat(stats, "入力行数\n(Input Rows)", "-", 0)
+    self._input_stat = self._make_stat(stats, "入力 / Input", "-", 0)
     self._duplicate_stat = self._make_stat(
       stats,
-      "削除する重複\n(Duplicates)",
+      "重複 / Duplicates",
       "-",
       1,
-      large=True,
+      highlight=True,
     )
-    self._output_stat = self._make_stat(stats, "残る行数\n(Output Rows)", "-", 2)
+    self._output_stat = self._make_stat(stats, "残り / Output", "-", 2)
 
     self._summary_label = ctk.CTkLabel(
       preview_card,
       text="",
-      font=make_font(16, weight="bold"),
+      font=make_font(12, weight="bold"),
       text_color=TEXT,
       anchor="center",
       wraplength=640,
       justify="center",
     )
-    self._summary_label.grid(row=2, column=0, sticky="ew", padx=20, pady=(4, 4))
+    self._summary_label.grid(row=2, column=0, sticky="ew", padx=16, pady=(0, 2))
 
     self._meta_label = ctk.CTkLabel(
       preview_card,
-      text="「プレビュー (Preview)」で件数を確認できます",
-      font=make_font(12),
+      text="プレビュー (Preview) で件数を確認",
+      font=make_font(11),
       text_color=TEXT_SECONDARY,
       anchor="center",
       wraplength=640,
       justify="center",
     )
-    self._meta_label.grid(row=3, column=0, sticky="ew", padx=20, pady=(0, 12))
+    self._meta_label.grid(row=3, column=0, sticky="ew", padx=16, pady=(0, 8))
 
     actions = ctk.CTkFrame(footer, fg_color=BG)
     actions.grid(row=1, column=0, sticky="ew")
@@ -262,8 +263,8 @@ class DedupeApp(ctk.CTk):
       hover_color="#D1D1D6",
       text_color=TEXT,
       corner_radius=10,
-      height=48,
-      font=make_font(15, weight="bold"),
+      height=40,
+      font=make_font(14, weight="bold"),
     ).grid(row=0, column=0, sticky="ew", padx=(0, 8))
 
     ctk.CTkButton(
@@ -274,8 +275,8 @@ class DedupeApp(ctk.CTk):
       hover_color=ACCENT_HOVER,
       text_color="#FFFFFF",
       corner_radius=10,
-      height=48,
-      font=make_font(15, weight="bold"),
+      height=40,
+      font=make_font(14, weight="bold"),
     ).grid(row=0, column=1, sticky="ew", padx=(8, 0))
 
   def _make_stat(
@@ -285,31 +286,29 @@ class DedupeApp(ctk.CTk):
     value: str,
     column: int,
     *,
-    large: bool = False,
+    highlight: bool = False,
   ) -> ctk.CTkLabel:
-    box = ctk.CTkFrame(parent, fg_color="#FAFAFA", corner_radius=10, height=120)
-    box.grid(row=0, column=column, sticky="nsew", padx=4, pady=4)
+    box = ctk.CTkFrame(parent, fg_color="#FAFAFA", corner_radius=8, height=68)
+    box.grid(row=0, column=column, sticky="nsew", padx=3, pady=2)
     box.grid_propagate(False)
-    box.grid_rowconfigure(1, weight=1)
     box.grid_columnconfigure(0, weight=1)
 
     ctk.CTkLabel(
       box,
       text=label,
-      font=make_font(12),
+      font=make_font(10),
       text_color=TEXT_SECONDARY,
       anchor="center",
-      justify="center",
-    ).grid(row=0, column=0, sticky="ew", padx=8, pady=(10, 0))
+    ).pack(padx=6, pady=(6, 0))
 
     value_label = ctk.CTkLabel(
       box,
       text=value,
-      font=make_font(34 if large else 26, weight="bold"),
+      font=make_font(22 if highlight else 18, weight="bold"),
       text_color=TEXT,
       anchor="center",
     )
-    value_label.grid(row=1, column=0, sticky="n", padx=8, pady=(0, 10))
+    value_label.pack(padx=6, pady=(0, 6))
     return value_label
 
   def _pick_file(self) -> None:
@@ -417,7 +416,7 @@ class DedupeApp(ctk.CTk):
     self._output_stat.configure(text="-", text_color=TEXT)
     self._duplicate_stat.configure(text="-", text_color=TEXT)
     self._summary_label.configure(text="")
-    self._meta_label.configure(text="「プレビュー (Preview)」で件数を確認できます")
+    self._meta_label.configure(text="プレビュー (Preview) で件数を確認")
 
   def _preview(self) -> None:
     result = self._run_dedupe(Path("_preview_placeholder.csv"), dry_run=True)
