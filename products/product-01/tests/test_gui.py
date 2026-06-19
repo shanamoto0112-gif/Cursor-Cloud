@@ -1,3 +1,5 @@
+import tkinter as tk
+
 from dedupcsv.gui import duplicate_stat_color, resolve_key_columns
 
 
@@ -18,4 +20,11 @@ def test_duplicate_stat_color():
 
 
 def test_gui_module_imports():
-  import dedupcsv.gui  # noqa: F401
+  from dedupcsv.gui import get_font_family, make_font, resolve_key_columns
+
+  assert resolve_key_columns([]) is None
+  root = tk.Tk()
+  root.withdraw()
+  assert get_font_family()
+  assert make_font(12)
+  root.destroy()
