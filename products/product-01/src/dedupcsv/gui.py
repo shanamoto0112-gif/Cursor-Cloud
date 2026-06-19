@@ -230,6 +230,7 @@ class DedupeApp(ctk.CTk):
     ).grid(row=0, column=1, sticky="ew", padx=(8, 0))
 
   def _make_stat(
+    self,
     parent: ctk.CTkFrame,
     label: str,
     value: str,
