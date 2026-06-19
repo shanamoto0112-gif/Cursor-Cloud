@@ -253,7 +253,7 @@ class DedupeApp(ctk.CTk):
 
     actions = ctk.CTkFrame(footer, fg_color=BG)
     actions.grid(row=1, column=0, sticky="ew")
-    actions.grid_columnconfigure((0, 1), weight=1)
+    actions.grid_columnconfigure((0, 1, 2), weight=1)
 
     ctk.CTkButton(
       actions,
@@ -265,11 +265,23 @@ class DedupeApp(ctk.CTk):
       corner_radius=10,
       height=40,
       font=make_font(14, weight="bold"),
-    ).grid(row=0, column=0, sticky="ew", padx=(0, 8))
+    ).grid(row=0, column=0, sticky="ew", padx=(0, 6))
 
     ctk.CTkButton(
       actions,
-      text="実行して保存 (Run & Save)",
+      text="クリア (Clear)",
+      command=self._clear_preview,
+      fg_color="#E5E5EA",
+      hover_color="#D1D1D6",
+      text_color=TEXT,
+      corner_radius=10,
+      height=40,
+      font=make_font(14, weight="bold"),
+    ).grid(row=0, column=1, sticky="ew", padx=6)
+
+    ctk.CTkButton(
+      actions,
+      text="保存 (Save)",
       command=self._run,
       fg_color=ACCENT,
       hover_color=ACCENT_HOVER,
@@ -277,7 +289,7 @@ class DedupeApp(ctk.CTk):
       corner_radius=10,
       height=40,
       font=make_font(14, weight="bold"),
-    ).grid(row=0, column=1, sticky="ew", padx=(8, 0))
+    ).grid(row=0, column=2, sticky="ew", padx=(6, 0))
 
   def _make_stat(
     self,

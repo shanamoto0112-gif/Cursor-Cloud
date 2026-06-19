@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dedupcsv"
-version = "1.2.2"
+version = "1.2.3"
 description = "CSV duplicate row remover for Windows"
 readme = "README.md"
 requires-python = ">=3.11"
